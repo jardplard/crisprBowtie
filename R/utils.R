@@ -124,18 +124,76 @@ utils::globalVariables(c('.', "SpCas9", "AsCas12a"))
 
 
 
-.validateBowtieIndex <- function(bowtie_index){
-    suffixes_fwd <- paste0(".", seq_len(4), ".ebwt")
-    suffixes_rev <- paste0(".rev.", seq_len(2), ".ebwt")
-    suffixes <- c(suffixes_fwd, suffixes_rev)
-    files   <- paste0(bowtie_index, suffixes)
-    missing <- files[!file.exists(files)]
-    if (length(missing)>0){
-        missing <- paste0(missing, collapse="\n") 
-        stop("The following files needed for bowtie",
-             " are missing: \n", missing)
+.validateBowtieIndex <- function(bowtie_index) {
+    check_index_type <- function(prefix, ext) {
+        suffixes <- c(
+                paste0(".", seq_len(4), ext),
+                paste0(".rev.", seq_len(2), ext)
+        )
+        files <- paste0(prefix, suffixes)
+        present <- files[file.exists(files)]
+        missing <- files[!file.exists(files)]
+        
+        list(
+                ext = ext,
+                files = files,
+                present = present,
+                missing = missing,
+                complete = length(present) == 6,
+                partial = length(present) > 0 && length(present) < 6
+        )
     }
-    return(bowtie_index)
+    
+    idx_ebwt  <- check_index_type(bowtie_index, ".ebwt")
+    idx_ebwtl <- check_index_type(bowtie_index, ".ebwtl")
+    idx_bt2   <- check_index_type(bowtie_index, ".bt2")
+    idx_bt2l  <- check_index_type(bowtie_index, ".bt2l")
+    
+    all_present <- c(
+            idx_ebwt$present, idx_ebwtl$present,
+            idx_bt2$present, idx_bt2l$present
+    )
+    
+    complete_sets <- c(
+            ebwt  = idx_ebwt$complete,
+            ebwtl = idx_ebwtl$complete,
+            bt2   = idx_bt2$complete,
+            bt2l  = idx_bt2l$complete
+    )
+    
+    if (length(all_present) == 0) {
+        stop(
+                "Bowtie index not found. Please use bowtie-build or bowtie2-build ",
+                "to create an index for the reference genome you are using."
+        )
+    }
+    
+    if (!any(complete_sets)) {
+        missing <- c()
+        if (idx_ebwt$partial)  missing <- c(missing, idx_ebwt$missing)
+        if (idx_ebwtl$partial) missing <- c(missing, idx_ebwtl$missing)
+        if (idx_bt2$partial)   missing <- c(missing, idx_bt2$missing)
+        if (idx_bt2l$partial)  missing <- c(missing, idx_bt2l$missing)
+        
+        stop(
+                "Only incomplete Bowtie/Bowtie2 indexes were detected for basename '",
+                bowtie_index, "'. The following files are missing:\n",
+                paste(missing, collapse = "\n")
+        )
+    }
+    
+    has_complete_bowtie1 <- idx_ebwt$complete || idx_ebwtl$complete
+    has_complete_bowtie2 <- idx_bt2$complete || idx_bt2l$complete
+    
+    if (has_complete_bowtie1 && has_complete_bowtie2) {
+        message(
+                "Both Bowtie and Bowtie2 indexes were detected for basename '",
+                bowtie_index,
+                "'. Bowtie will use the Bowtie2 index."
+        )
+    }
+    
+    bowtie_index
 }
 
 
