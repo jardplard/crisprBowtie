@@ -76,7 +76,7 @@ runBowtie <- function(sequences,
                       n_mismatches=0,
                       all_alignments=TRUE,
                       n_max_alignments=1000,
-                      cores=1,
+                      cores=11,
                       verbose=TRUE
 ){    
     .checkNMismatches(n_mismatches)

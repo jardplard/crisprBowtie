@@ -105,7 +105,7 @@ runCrisprBowtie <- function(spacers,
                             n_mismatches=0, 
                             all_alignments=TRUE,
                             n_max_alignments=1000,
-                            cores=1,
+                            cores=11,
                             force_spacer_length=FALSE,
                             rna_strict_directionality=TRUE,
                             verbose=TRUE
