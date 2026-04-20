@@ -29,7 +29,8 @@
 #' @param all_alignments Should all possible alignments be returned?
 #'     TRUE by default. 
 #' @param n_max_alignments Maximum number of alignments to return if
-#'     \code{all_alignments} is FALSE. 1000 by default. 
+#'     \code{all_alignments} is FALSE. 1000 by default.
+#' @param cores Number of cores to use for bowtie alignment. 1 by default.
 #' @param verbose Should messages be printed to the console?
 #'     TRUE by default.
 #' 
@@ -75,6 +76,7 @@ runBowtie <- function(sequences,
                       n_mismatches=0,
                       all_alignments=TRUE,
                       n_max_alignments=1000,
+                      cores=1,
                       verbose=TRUE
 ){    
     .checkNMismatches(n_mismatches)
@@ -99,6 +101,7 @@ runBowtie <- function(sequences,
                       f=TRUE,
                       v=n_mismatches,
                       a=all_alignments,
+                      threads=cores,
                       k=crisprBase:::.makeLongInteger(n_max_alignments), 
                       force=TRUE)
     #cat("Reading bowtie output file. \n")

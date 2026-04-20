@@ -15,6 +15,7 @@ runCrisprBowtie(
   n_mismatches = 0,
   all_alignments = TRUE,
   n_max_alignments = 1000,
+  cores = 1,
   force_spacer_length = FALSE,
   rna_strict_directionality = TRUE,
   verbose = TRUE
@@ -53,6 +54,8 @@ TRUE by default.}
 
 \item{n_max_alignments}{Maximum number of alignments to return if
 \code{all_alignments} is FALSE. 1000 by default.}
+
+\item{cores}{Number of cores to use for bowtie alignment. 1 by default.}
 
 \item{force_spacer_length}{Should the spacer length be overwritten in the
 \code{crisprNuclease} object? FALSE by default.}

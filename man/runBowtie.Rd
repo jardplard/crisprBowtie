@@ -11,6 +11,7 @@ runBowtie(
   n_mismatches = 0,
   all_alignments = TRUE,
   n_max_alignments = 1000,
+  cores = 1,
   verbose = TRUE
 )
 }
@@ -30,6 +31,8 @@ TRUE by default.}
 
 \item{n_max_alignments}{Maximum number of alignments to return if
 \code{all_alignments} is FALSE. 1000 by default.}
+
+\item{cores}{Number of cores to use for bowtie alignment. 1 by default.}
 
 \item{verbose}{Should messages be printed to the console?
 TRUE by default.}

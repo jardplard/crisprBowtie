@@ -23,7 +23,8 @@
 #' @param all_alignments Should all possible alignments be returned?
 #'     TRUE by default. 
 #' @param n_max_alignments Maximum number of alignments to return if
-#'     \code{all_alignments} is FALSE. 1000 by default. 
+#'     \code{all_alignments} is FALSE. 1000 by default.
+#' @param cores Number of cores to use for bowtie alignment. 1 by default.
 #' @param force_spacer_length Should the spacer length be overwritten in the
 #'     \code{crisprNuclease} object? FALSE by default. 
 #' @param rna_strict_directionality Should only protospacers found in the 
@@ -104,6 +105,7 @@ runCrisprBowtie <- function(spacers,
                             n_mismatches=0, 
                             all_alignments=TRUE,
                             n_max_alignments=1000,
+                            cores=1,
                             force_spacer_length=FALSE,
                             rna_strict_directionality=TRUE,
                             verbose=TRUE
@@ -211,6 +213,7 @@ runCrisprBowtie <- function(spacers,
                      bsgenome=bsgenome,
                      n_mismatches=n_mismatches,
                      n_max_alignments=n_max_alignments,
+                     cores=cores,
                      all_alignments=all_alignments,
                      verbose=verbose)
     if (is.null(aln)){

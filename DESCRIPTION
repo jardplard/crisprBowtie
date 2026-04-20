@@ -33,7 +33,7 @@ Description: Provides a user-friendly interface to map on-targets and off-target
     Both DNA- and RNA-targeting nucleases are supported.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 BugReports: https://github.com/crisprVerse/crisprBowtie/issues
 URL: https://github.com/crisprVerse/crisprBowtie
